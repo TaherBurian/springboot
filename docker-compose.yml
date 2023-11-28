@@ -1,0 +1,21 @@
+version: '3'
+services:
+  spring-boot-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=mydatabase
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=mysecretpassword
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
