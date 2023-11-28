@@ -1,8 +1,6 @@
 HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Exclude all files in target/ except the specific JAR file
+target/*
 !target/test-0.0.1-SNAPSHOT.jar
 
 ### STS ###
