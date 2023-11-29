@@ -17,22 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build Docker images
-        run: docker-compose build
-        working-directory: .  # Use the root directory where docker-compose.yml is located
-
-      - name: Push Docker images
-        run: docker-compose push
-        working-directory: .  # Use the root directory where docker-compose.yml is located
-
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: List local Docker images
-        run: docker images
+      - name: Build and push Docker images
+        run: docker-compose build && docker-compose push
+        working-directory: .  # Use the root directory where docker-compose.yml is located
 
-      - name: List Docker images in GitHub Container Registry
-        run: docker search ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-
-      - name: Push Docker Image
-        run: docker push ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):latest
+      - name: Debug information
+        run: |
+          echo "GitHub Repository: ${{ github.repository }}"
+          echo "Image Name: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):latest"
